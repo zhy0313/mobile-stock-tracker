@@ -1,18 +1,8 @@
 import React, { PropTypes, Component } from 'react'
 import { Image, Animated, View } from 'react-native'
-import ExamplesRegistry from '../Services/ExamplesRegistry'
 import { Images } from '../Themes'
 import styles from './Styles/ProgressiveImageStyle'
 
-// Example
-ExamplesRegistry.add('Progressive Image', () =>
-  <ProgressiveImage
-    style={styles.progressiveImage}
-    defaultSource={Images.logo}
-    source='https://upload.wikimedia.org/wikipedia/commons/c/cc/ESC_large_ISS022_ISS022-E-11387-edit_01.JPG'
-    thumbnail='http://i.imgur.com/eVAFUhj.png'
-  />
-)
 
 export default class ProgressiveImage extends Component {
   constructor (props) {

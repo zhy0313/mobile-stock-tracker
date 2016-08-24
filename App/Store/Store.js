@@ -7,7 +7,6 @@ import createSagaMiddleware from 'redux-saga'
 import sagas from '../Sagas/'
 import R from 'ramda'
 import Reactotron from 'reactotron'
-import RehydrationServices from '../Services/RehydrationServices'
 import ReduxPersist from '../Config/ReduxPersist'
 
 // the logger master switch
@@ -45,8 +44,6 @@ export default () => {
       enhancers
     )
 
-    // configure persistStore and check reducer version number
-    RehydrationServices.updateReducers(store)
   } else {
     const enhancers = compose(
       applyMiddleware(...middleware),
