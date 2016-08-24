@@ -62,7 +62,7 @@ class LookupResults extends React.Component {
 
   render () {
     return (
-      <View style={styles.container}>
+      <View style={styles.scroll}>
         {this._noRowData() ?
           <Text style={styles.emptyText}>No Results</Text>
           : <ListView

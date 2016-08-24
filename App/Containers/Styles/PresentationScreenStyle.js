@@ -12,7 +12,12 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'transparent'
+  },
+  scroll: {
+    flex: 1,
+    backgroundColor: Colors.facebook
   },
   inputContainer: {
     // flex: 1,
@@ -32,7 +37,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 10,
     padding: 10,
-    backgroundColor: Colors.fire,
+    backgroundColor: Colors.facebook,
     justifyContent: 'center'
   },
   buttonText: {
