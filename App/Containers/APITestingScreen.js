@@ -1,11 +1,14 @@
 // An All Components Screen is a great way to dev and quick-test components
 import React from 'react'
-import { ScrollView, View, Text, TouchableOpacity, Image } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity, Image, TextInput, TouchableHighlight } from 'react-native'
 import { Metrics, Images } from '../Themes'
 import FullButton from '../Components/FullButton'
 // For API
 import API from '../Services/Api'
 import FJSON from 'format-json'
+import RoundedButton from '../Components/RoundedButton'
+import buttonStyle from './Styles/RoundedButtonStyle'
+import { ajax, get, post } from 'jquery'
 
 // Styles
 import styles from './Styles/APITestingScreenStyle'
@@ -21,10 +24,12 @@ export default class APITestingScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      visibleHeight: Metrics.screenHeight
+      visibleHeight: Metrics.screenHeight,
+      symbol: ''
     }
 
     this.api = API.create()
+    this.searchSpecificSymbol = this.searchSpecificSymbol.bind(this);
   }
 
   showResult (response, title = 'Response') {
@@ -54,6 +59,17 @@ export default class APITestingScreen extends React.Component {
     return endpoints.map((endpoint) => this.renderButton(endpoint))
   }
 
+  searchSpecificSymbol() {
+    console.log('yo! it be workin\'');
+    fetch('http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=NFLX', { method: "GET" })
+      .then(res => {
+        console.log('res:', res);
+      })
+      .catch(err => {
+        console.log('err:', err);
+      })
+  }
+
   render () {
     return (
       <View style={styles.mainContainer}>
@@ -62,14 +78,27 @@ export default class APITestingScreen extends React.Component {
 
           <View style={styles.section}>
             <Text style={styles.sectionText}>
-              Testing API with Postman or APIary.io verifies the server works.
-              The API Test screen is the next step; a simple in-app way to verify and debug your in-app API functions.
-            </Text>
-            <Text style={styles.sectionText}>
-              Create new endpoints in Services/Api.js then add example uses to endpoints array in Containers/APITestingScreen.js
+              Ex. search 'AAPL' or 'NFLX'
             </Text>
           </View>
-          {this.renderButtons()}
+          <TextInput
+            style={{
+              height: 40,
+              borderColor: 'black',
+              borderWidth: 1,
+              backgroundColor: 'white',
+              color: 'black'
+            }}
+            placeholder="Enter in a specific stock symbol"
+          />
+          <TouchableOpacity
+            style={buttonStyle.button}
+          >
+            <Text
+              style={buttonStyle.buttonText}
+              onPress={this.searchSpecificSymbol}
+            >Search</Text>
+          </TouchableOpacity>
           <APIResult ref='result' />
         </ScrollView>
       </View>

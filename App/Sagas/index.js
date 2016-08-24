@@ -6,6 +6,9 @@ import { watchLoginAttempt } from './LoginSaga'
 import getCityWeather from './GetCityWeatherSaga'
 import DebugSettings from '../Config/DebugSettings'
 
+import lookup from './LookupSaga';
+import quote from './QuoteSaga';
+
 // Create our API at this level and feed it into
 // the sagas that are expected to make API calls
 // so there's only 1 copy app-wide!
@@ -14,7 +17,6 @@ const api = DebugSettings.useFixtures ? FixtureAPI : API.create()
 
 // start the daemons
 export default function * root () {
-  yield fork(watchStartup)
-  yield fork(watchLoginAttempt)
-  yield fork(getCityWeather(api).watcher)
+  yield fork(lookup(api).watcher)
+  yield fork(quote(api).watcher)
 }

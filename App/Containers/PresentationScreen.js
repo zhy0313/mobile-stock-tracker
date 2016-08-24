@@ -1,14 +1,23 @@
-import React, {PropTypes} from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
+import React, { PropTypes, Component } from 'react'
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+  ActivityIndicator
+} from 'react-native'
 import { Images } from '../Themes'
 import { connect } from 'react-redux'
 import RoundedButton from '../Components/RoundedButton'
-import { Actions as NavigationActions } from 'react-native-router-flux'
+import Actions from '../Actions/Creators'
+
+import LookupResults from './LookupResults';
 
 // Styles
 import styles from './Styles/PresentationScreenStyle'
 
-class PresentationScreen extends React.Component {
+class PresentationScreen extends Component {
 
   static propTypes = {
     componentExamples: PropTypes.func,
@@ -18,42 +27,38 @@ class PresentationScreen extends React.Component {
     deviceInfo: PropTypes.func
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      input: 'NFLX'
+    }
+  }
+
+  _handleSubmit = () => {
+    const { requestLookup } = this.props;
+    const { input } = this.state;
+    requestLookup(input);
+    this.setState({ input: '' })
+  }
+
   render () {
+    const { input } = this.state;
+    const { fetching } = this.props;
     return (
       <View style={styles.mainContainer}>
-        <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            onChangeText={ (input) => this.setState({ input })}
+            value={input}
+          />
+          <TouchableOpacity style={styles.button} onPress={this._handleSubmit}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
         <ScrollView style={styles.container}>
-
-          <View style={styles.section} >
-            <Text style={styles.sectionText} >
-              Look up stock market data
-            </Text>
-          </View>
-
-          <RoundedButton onPress={this.props.componentExamples}>
-            Symbol search
-          </RoundedButton>
-
-          <RoundedButton onPress={this.props.usageExamples}>
-            Specific symbol
-          </RoundedButton>
-
-          <RoundedButton onPress={this.props.apiTesting}>
-            API Testing Screen
-          </RoundedButton>
-
-          <RoundedButton onPress={this.props.theme}>
-            Theme Screen
-          </RoundedButton>
-
-          <RoundedButton onPress={this.props.deviceInfo}>
-            Device Info Screen
-          </RoundedButton>
-
-          <View style={styles.centered}>
-            <Text style={styles.subtitle}>Made with ❤️ by Infinite Red</Text>
-          </View>
-
+          {fetching ? <ActivityIndicator size="large" style={styles.loading} /> : <LookupResults />}
         </ScrollView>
       </View>
     )
@@ -62,16 +67,13 @@ class PresentationScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    fetching: state.lookup.fetching
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    componentExamples: NavigationActions.componentExamples,
-    usageExamples: NavigationActions.usageExamples,
-    apiTesting: NavigationActions.apiTesting,
-    theme: NavigationActions.theme,
-    deviceInfo: NavigationActions.deviceInfo
+    requestLookup: input => dispatch(Actions.requestLookup(input))
   }
 }
 
