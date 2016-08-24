@@ -2,17 +2,8 @@
 import { createTypes } from 'reduxsauce'
 
 export default createTypes(`
-  LOGIN_ATTEMPT
-  LOGIN_SUCCESS
-  LOGIN_FAILURE
-
-  LOGOUT
 
   STARTUP
-
-  TEMPERATURE_REQUEST
-  TEMPERATURE_RECEIVE
-  TEMPERATURE_FAILURE
 
   LOOKUP_REQUEST
   LOOKUP_RECEIVE
@@ -20,6 +11,6 @@ export default createTypes(`
 
   QUOTE_REQUEST
   QUOTE_RECEIVE
-  QUOTE_FAILURE 
+  QUOTE_FAILURE
 
 `)
